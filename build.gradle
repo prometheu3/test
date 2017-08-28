@@ -1,0 +1,69 @@
+group 'com.prometheus'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'org.akhikhl.gretty'
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'maven'
+apply plugin: 'idea'
+
+
+
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    compile (
+        "javax.servlet:javax.servlet-api:4.0.0"
+
+    )
+
+    testCompile (
+        "junit:junit:4.12"
+    )
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+[compileJava, javadoc, compileTestJava]*.options*.encoding = "UTF-8"
+
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.akhikhl.gretty:gretty:2.0.0'
+    }
+}
+
+
+if (!project.plugins.findPlugin(org.akhikhl.gretty.GrettyPlugin))
+    project.apply(plugin:org.akhiakhl.gretty.GrettyPlugin)
+
+
+
+gretty {
+    httpEnabled = true
+    servletContainer = "tomcat8"
+    contextPath = "mygradle"
+    host = "localhost"
+    httpPort = 8080
+    scanInterval = 1
+    fastReload = true
+    inplaceMode = "soft"
+    loggingLevel = "DEBUG"
+    consoleLogEnabled = true
+    debugPort = 5005
+    debugSuspend = true
+}
